@@ -2,10 +2,20 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var cheerio = require('cheerio');
+var youtube = require('./youtube');
+var mysql = require('../mysql/_Mysql');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function(req, res_parent, next) {
+  var url_final = youtube.MakeVideoBaseURL(20);
+  youtube.YoutubeSearch(req.query, '고양이,아비시니안,애교', '', function(ret) {
+    try {
+      url_final += ('&id=' + JSON.parse(ret.sRet));
+      youtube.YoutubeGetVideos(url_final, ret.nextToken, ret.prevToken, res_parent);
+    }catch(err){
+      res_parent.send({ret:-1, prevToken:"", nextToken:"", data: ret.sRet})
+    }
+  })
 });
 
 router.get('/most10', function(req, res, next) {
@@ -37,5 +47,9 @@ router.get('/most10', function(req, res, next) {
     res.render('index', { title: 'Express - Error' });
   }
 });
+
+router.get('/dbtest', function(req, res, next){
+  var list = [];
+})
 
 module.exports = router;
