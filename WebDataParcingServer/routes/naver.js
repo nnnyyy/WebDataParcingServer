@@ -20,8 +20,10 @@ exports.GetMost = function(callback) {
         request( reqOptions, function(err, res_inner, body) {
             var aMost = [];
             var $ = cheerio.load(body);
+            var cnt = 1;
             $('div.PM_CL_realtimeKeyword_rolling_base div.PM_CL_realtimeKeyword_rolling ul li span.ah_k').each(function() {
-                aMost.push({item:$(this).text()})
+                aMost.push({rank: cnt, item:$(this).text()})
+                cnt++;
             });
 
             //res.send({ data: aMost });
