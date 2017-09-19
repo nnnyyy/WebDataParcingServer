@@ -12,7 +12,7 @@ exports.MakeVideoBaseURL = function(maxResults){
 }
 
 exports.YoutubeSearch = function(query, params, pageToken, handler) {
-    var url_final = 'https://www.googleapis.com/youtube/v3/search?part=snippet&key='+youtubeBrowerKey+'&maxResults=20&type=video&q='+urlencode(params);
+    var url_final = 'https://www.googleapis.com/youtube/v3/search?part=snippet&key='+youtubeBrowerKey+'&maxResults=20&type=video&q='+params;
     console.log(url_final);
     if(pageToken != null) {
         url_final += '&pageToken=' + pageToken;
