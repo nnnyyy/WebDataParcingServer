@@ -57,3 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+WebDataParcingServer/.idea/workspace.xml
+WebDataParcingServer/.idea/modules.xml
+WebDataParcingServer/.idea/misc.xml
+WebDataParcingServer/.idea/libraries/WebDataParcingServer_node_modules.xml
+WebDataParcingServer/.idea/jsLibraryMappings.xml
+WebDataParcingServer/.idea/encodings.xml
+WebDataParcingServer/.idea/WebDataParcingServer.iml
+WebDataParcingServer/.idea/.name
