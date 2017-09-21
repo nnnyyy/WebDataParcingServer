@@ -17,8 +17,19 @@
         <td><%= data.title %></td>
       </tr>
       <tr>
+        <td><%= data.nickname %></td>
+      </tr>
+      <tr>
         <td><div id="content"></div></td>
       </tr>
+      <table id="comment">
+        <% for(var i = 0 ; i < data.comments.length ; ++i) {%>
+          <tr>
+            <td><%= data.comments[i].nick %></td>
+            <td><%= data.comments[i].comment %></td>
+          </tr>
+        <%}%>
+      </table>
     </table>
   </body>
 </html>

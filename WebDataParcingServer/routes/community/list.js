@@ -3,6 +3,7 @@
  */
 var app = require('../../app');
 var clien = require('./clien');
+var fomos = require('./fomos');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -25,6 +26,15 @@ var community_list = {
         parcer: clien.free,
         app_parcer: clien.app_page,
         isAppView: true,
+    },
+    fomos_free:
+    {
+        name: '포모스 자게',
+        url: 'http://m.fomos.kr/talk/article_list?bbs_id=11&page=',
+        obj: fomos,
+        parcer: fomos.free,
+        app_parcer: fomos.app_page,
+        isAppView: true,
     }
 };
 
@@ -46,4 +56,14 @@ exports.getListJson = function() {
 
 exports.getList = function() {
     return community_list;
+}
+
+// URL 스트링 파라메터 추출
+exports.getParameterByName = function(name, url) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }

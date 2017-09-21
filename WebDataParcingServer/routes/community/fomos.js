@@ -5,28 +5,25 @@ var request = require('request');
 var cheerio = require('cheerio');
 var urlencode = require('urlencode');
 var list = require('./list');
-var PREFIX_LINK = 'https://m.clien.net';
+var PREFIX_LINK = 'http://m.fomos.kr';
 
 exports.free = function($, key, info, callback) {
     data = [];
+    var title = '';
+    var url = '';
+    var name = 'noname';
+    var regdate = '';
+    var viewcnt = '0';
+    var comment = '0';
     url = '';
-    $('.item').each(function() {
-        title = $(this).find('.list-subject').text().trim();
-        title = "[" + title.replace("\n", "] ");
-        title = title.replace(/\n/gi, "");
-        title = title.replace(/\t/gi, "");
-        url = PREFIX_LINK + $(this).find('.list-subject').attr('href');
+    $('.gossip .ut_item').each(function() {
+        $(this).find('.num').text('');
+        title = $(this).find('a').text().trim();
+        url = PREFIX_LINK + $(this).find('a').attr('href');
         if(info.isAppView) {
-            a = url.split('?')[0];
-            b = a.split('/');
-            url = list.server_root + '/community/app/'+ key + '/' + b[b.length-1];
+            no = list.getParameterByName('indexno', url);
+            url = list.server_root + '/community/app/'+ key + '/' + no;
         }
-        name = $(this).find('.list-author').text().trim();
-        regdate = $(this).find('.timestamp').text().trim();
-        comment = $(this).find('.badge-reply').text().trim();
-        viewcnt = "0";
-        if(name == "") return;
-        if(comment == "") comment = "0";
         data.push({title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)});
     })
     callback({ret:0, list:data});
@@ -36,11 +33,8 @@ exports.free = function($, key, info, callback) {
 exports.app_page = function(key, idx, callback) {
     var url_final = '';
     switch(key) {
-        case 'clien_free':
-            url_final = 'https://m.clien.net/service/board/park/'+ idx +'?po=0&od=T33&sk=&sv=&category=&groupCd=board_all&articlePeriod=default';
-            break;
-        case 'clien_android':
-            url_final = 'https://www.clien.net/service/board/cm_andro/'+ idx +'?po=0&od=T31&sk=&sv=&category=&groupCd=&articlePeriod=default'
+        case 'fomos_free':
+            url_final = 'http://m.fomos.kr/talk/article_view?bbs_id=11&lurl=%2Ftalk%2Farticle_list%3Fbbs_id%3D11%26page%3D1&indexno=' + idx;
             break;
     }
 
@@ -70,7 +64,7 @@ exports.app_page = function(key, idx, callback) {
 }
 
 exports.getRealPage = function(page) {
-    return page - 1;
+    return page;
 }
 
 exports.nextPage = function(page) {
@@ -78,12 +72,29 @@ exports.nextPage = function(page) {
 }
 
 function parsingContent($,key,idx,callback) {
-    title = $('.title-subject div.break').text().trim();
-    nickname = $('button.nick').text().trim();
-    viewcnt = $('span.view-count storng').text().trim();
-    article = $('.post-content').html();
+    var title = $('.board_area .tit').text().trim();
+    var nickname = $('#contents .author').text().trim();
+    $('.news_image img').each(function() {
+        $(this).attr('src', PREFIX_LINK + $(this).attr('src'));
+    })
+    $('.banner_area').each(function() {
+        $(this).html('');
+    })
+    $('#mobitree').html('');
+    $('#mobitreeP').html('');
+    $('#waveP').html('');
+    $('#waveAd').html('');
+    $('#uniqubeAd_area').html('');
+    $('.btn_like').html('');
+    $('#contents iframe').each(function() {
+        $(this).attr('width', '100%');
+        $(this).attr('height', 'auto');
+    })
+    var viewcnt = 'view'
+    var article = $('.view_cont').html();
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim();
 
+    /*
     var url_final = ''
     switch(key) {
         case 'clien_free':
@@ -122,4 +133,6 @@ function parsingContent($,key,idx,callback) {
     }catch(e){
         callback({});
     }
+    */
+    callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: ''});
 }
