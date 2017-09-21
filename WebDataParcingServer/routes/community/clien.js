@@ -3,6 +3,7 @@
  */
 var request = require('request');
 var cheerio = require('cheerio');
+var urlencode = require('urlencode');
 
 
 var PREFIX_LINK = 'https://m.clien.net';
@@ -24,12 +25,12 @@ exports.free = function($, info, callback) {
         viewcnt = "0";
         if(name == "") return;
         if(comment == "") comment = "0";
-        data.push({title: title, link: url, name: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment});
+        data.push({title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)});
     })
     callback({ret:0, list:data});
 }
 
-//  ¾Û Çü½ÄÀ¸·Î ÆÄ½Ì
+//  ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½
 exports.free_app_page = function(idx, callback) {
     url_final = 'https://m.clien.net/service/board/park/'+ idx +'?po=0&od=T33&sk=&sv=&category=&groupCd=board_all&articlePeriod=default';
     console.log(url_final);
@@ -45,7 +46,9 @@ exports.free_app_page = function(idx, callback) {
         request( reqOptions, function(err, res_inner, body) {
             var $ = cheerio.load(body);
             try {
-                callback({ret:0})
+                parsingContent($,idx, function(ret) {
+                    callback({ret:0, data: ret});
+                });
             }
             catch(e) {
                 callback({ret:-1})
@@ -72,15 +75,50 @@ exports.pop = function($, info, callback) {
         viewcnt = "0";
         if(name == "") return;
         if(comment == "") comment = "0";
-        data.push({title: title, link: url, name: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment});
+        data.push({title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment});
     })
     callback({ret:0, list:data});
 }
 
-exports.page = function(page) {
+exports.getRealPage = function(page) {
     return page - 1;
 }
 
 exports.nextPage = function(page) {
     return parseInt(page) + 1;
+}
+
+function parsingContent($,idx,callback) {
+    title = $('.title-subject div.break').text().trim();
+    nickname = $('button.nick').text().trim();
+    viewcnt = $('span.view-count storng').text().trim();
+    article = $('.post-article').html();
+    article = article.replace(/(\r\n|\n|\r)/gm,"").trim();
+
+    var reqOptions = {
+        url: 'https://m.clien.net/service/api/board/park/'+idx+'/comment?param=%7B%22order%22%3A%22date%22%2C%22po%22%3A0%2C%22ps%22%3A100%7D',
+        method: 'GET',
+        headers: {
+        }
+    }
+
+    try {
+        request( reqOptions, function(err, res_inner, body) {
+            try {
+                var comments_root = JSON.parse(body);
+                var comments = [];
+                for(var i = 0 ; i < comments_root.length ; ++i) {
+                    comments.push({nick:comments_root[i].member.nick, comment: comments_root[i].comment, regdate: comments_root[i].insertDate});
+                }
+                console.log(comments);
+                callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: comments});
+            }
+            catch(e) {
+                callback({});
+            }
+
+        });
+    }catch(e){
+        callback({});
+    }
 }

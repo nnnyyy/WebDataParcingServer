@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+      $(document).ready(function(){
+        var article = '<%- data.article %>';
+        $('#content').html(article);
+      });
+    </script>
   </head>
   <body>
-    <table>
-      <th>
-        <td>°á°ú</td>
-      </th>
+    <table style="width: 100%">
       <tr>
-        <td><%= ret %></td>
+        <td><%= data.title %></td>
+      </tr>
+      <tr>
+        <td><div id="content"></div></td>
       </tr>
     </table>
   </body>

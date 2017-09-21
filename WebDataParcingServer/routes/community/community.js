@@ -24,9 +24,9 @@ router.get('/:key/:page', function(req, res, next) {
         return;
     }
 
-    var url_final = list[key].url + list[key].page(page);
+    var url_final = list[key].url + list[key].obj.getRealPage(page);
 
-    //  ¸®½ºÆ® ¾ò¾î¿À±â
+    //  ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     var reqOptions = {
         url: url_final,
         method: 'GET',

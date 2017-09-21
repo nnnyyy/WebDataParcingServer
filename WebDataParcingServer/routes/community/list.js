@@ -11,7 +11,6 @@ var community_list = {
         url: 'http://m.clien.net/service/board/park?&od=T31&po=',
         obj: clien,
         parcer: clien.free,
-        page: clien.page,
         app_parcer: clien.free_app_page,
         isAppView: true,
     },
@@ -21,7 +20,6 @@ var community_list = {
         url: 'https://m.clien.net/service/group/board_all?&od=T33&po=',
         obj: clien,
         parcer: clien.pop,
-        page: clien.page,
         app_parcer: clien.free_app_page,
         isAppView: false,
     }
