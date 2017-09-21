@@ -14,17 +14,17 @@ var community_list = {
         url: 'http://m.clien.net/service/board/park?&od=T31&po=',
         obj: clien,
         parcer: clien.free,
-        app_parcer: clien.free_app_page,
+        app_parcer: clien.app_page,
         isAppView: true,
     },
-    clien_pop:
+    clien_android:
     {
-        name: '클리앙 공감',
-        url: 'https://m.clien.net/service/group/board_all?&od=T33&po=',
+        name: '클리앙 안드로메당',
+        url: 'https://www.clien.net/service/board/cm_andro?&od=T31&po=',
         obj: clien,
-        parcer: clien.pop,
-        app_parcer: clien.free_app_page,
-        isAppView: false,
+        parcer: clien.free,
+        app_parcer: clien.app_page,
+        isAppView: true,
     }
 };
 

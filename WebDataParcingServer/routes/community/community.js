@@ -10,7 +10,7 @@ module.exports = router;
 var commlist = require('./list');
 commlist.init();
 
-router.get('/', function(req, res, next) {
+router.get('/list', function(req, res, next) {
     res.send(commlist.getListJson());
 });
 
@@ -38,7 +38,7 @@ router.get('/:key/:page', function(req, res, next) {
         request( reqOptions, function(err, res_inner, body) {
             var $ = cheerio.load(body);
             try {
-                list[key].parcer($, list[key], function(ret){
+                list[key].parcer($, key, list[key], function(ret){
                     ret.next_page = list[key].obj.nextPage(page);
                     res.send(ret);
                 });
@@ -57,7 +57,7 @@ router.get('/app/:key/:idx', function(req, res, next) {
     list = commlist.getList();
     key = req.params.key;
     idx = req.params.idx;
-    list[key].app_parcer(idx, function(ret) {
+    list[key].app_parcer(key, idx, function(ret) {
         res.render('appview', ret);
     })
 })
