@@ -4,8 +4,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var urlencode = require('urlencode');
-
-
+var list = require('./list');
 var PREFIX_LINK = 'https://m.clien.net';
 
 exports.free = function($, info, callback) {
@@ -17,7 +16,7 @@ exports.free = function($, info, callback) {
         if(info.isAppView) {
             a = url.split('?')[0];
             b = a.split('/');
-            url = 'http://127.0.0.1:7888/community/app/clien_free/' + b[b.length-1];
+            url = list.server_root + '/community/app/clien_free/' + b[b.length-1];
         }
         name = $(this).find('.list-author').text().trim();
         regdate = $(this).find('.timestamp').text().trim();

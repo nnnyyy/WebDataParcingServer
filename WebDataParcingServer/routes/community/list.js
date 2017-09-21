@@ -4,6 +4,9 @@
 var app = require('../../app');
 var clien = require('./clien');
 
+var SERVER_ROOT = 'http://4seasonpension.com:7888';
+exports.server_root = SERVER_ROOT;
+
 var community_list = {
     clien_free:
     {
