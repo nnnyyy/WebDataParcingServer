@@ -91,7 +91,7 @@ function parsingContent($,idx,callback) {
     title = $('.title-subject div.break').text().trim();
     nickname = $('button.nick').text().trim();
     viewcnt = $('span.view-count storng').text().trim();
-    article = $('.post-article').html();
+    article = $('.post-content').html();
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim();
 
     var reqOptions = {
