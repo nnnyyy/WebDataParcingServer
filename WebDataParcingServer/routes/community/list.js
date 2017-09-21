@@ -1,21 +1,29 @@
 /**
  * Created by nnnyy on 2017-09-20.
  */
-
+var app = require('../../app');
 var clien = require('./clien');
 
 var community_list = {
     clien_free:
     {
         name: '클리앙 모공',
-        url: 'https://www.clien.net/service/board/park',
-        parcer: clien.free
+        url: 'http://m.clien.net/service/board/park?&od=T31&po=',
+        obj: clien,
+        parcer: clien.free,
+        page: clien.page,
+        app_parcer: clien.free_app_page,
+        isAppView: true,
     },
     clien_pop:
     {
-        name: '웃대 웃긴자료',
-        url: 'https://www.clien.net/service/board/park',
-        parcer: clien.pop
+        name: '클리앙 공감',
+        url: 'https://m.clien.net/service/group/board_all?&od=T33&po=',
+        obj: clien,
+        parcer: clien.pop,
+        page: clien.page,
+        app_parcer: clien.free_app_page,
+        isAppView: false,
     }
 };
 
