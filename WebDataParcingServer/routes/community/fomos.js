@@ -16,15 +16,22 @@ exports.free = function($, key, info, callback) {
     var viewcnt = '0';
     var comment = '0';
     url = '';
-    $('.gossip .ut_item').each(function() {
-        $(this).find('.num').text('');
-        title = $(this).find('a').text().trim();
+    $('.list_area .list_cont .board_list li').each(function() {
+        if( $(this).attr('class') == 'notice' ) return;
+        title = $(this).find('.title').text().trim();
         url = PREFIX_LINK + $(this).find('a').attr('href');
         if(info.isAppView) {
             no = list.getParameterByName('indexno', url);
             url = list.server_root + '/community/app/'+ key + '/' + no;
         }
-        data.push({title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)});
+        user_info = $(this).find('.info');
+        name = user_info.find('.user').text();
+        viewcnt = user_info.find('.num').text();
+        regdate = user_info.find('.date').text();
+        comment = $(this).find('.red').text().replace(/\(|\)/g, '');
+        if( comment == '' ) comment = '0';
+        row = {title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)};
+        data.push(row);
     })
     callback({ret:0, list:data});
 }
