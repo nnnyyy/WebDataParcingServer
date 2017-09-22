@@ -24,7 +24,7 @@ exports.free = function($, key, info, callback) {
         url = PREFIX_LINK + $(this).attr('href');
         if(info.isAppView) {
             no = list.getParameterByName('number', url);
-            url = list.server_root + '/community/app/'+ key + '/' + no;
+            url = list.makeAppViewURL(key, no);
         }
         row = {title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)};
         data.push(row);

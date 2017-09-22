@@ -17,7 +17,7 @@
         <td><%= data.title %></td>
       </tr>
       <tr>
-        <td><%= data.nickname %></td>
+        <td><%= data.nickname %> | <%= data.vcnt %></td>
       </tr>
       <tr>
         <td><div id="content"></div></td>
@@ -27,6 +27,7 @@
           <tr>
             <td><%= data.comments[i].nick %></td>
             <td><%= data.comments[i].comment %></td>
+            <td><%= data.comments[i].regdate %></td>
           </tr>
         <%}%>
       </table>

@@ -22,7 +22,7 @@ exports.free = function($, key, info, callback) {
         url = PREFIX_LINK + $(this).find('a').attr('href');
         if(info.isAppView) {
             no = list.getParameterByName('indexno', url);
-            url = list.server_root + '/community/app/'+ key + '/' + no;
+            url = list.makeAppViewURL(key, no);
         }
         user_info = $(this).find('.info');
         name = user_info.find('.user').text();
@@ -100,46 +100,5 @@ function parsingContent($,key,idx,callback) {
     var viewcnt = 'view'
     var article = $('.view_cont').html();
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim();
-
-    /*
-    var url_final = ''
-    switch(key) {
-        case 'clien_free':
-            url_final = 'https://m.clien.net/service/api/board/park/'+idx+'/comment?param=%7B%22order%22%3A%22date%22%2C%22po%22%3A0%2C%22ps%22%3A100%7D';
-            break;
-
-        case 'clien_android':
-            url_final = 'https://m.clien.net/service/api/board/cm_andro/'+idx+'/comment?param=%7B%22order%22%3A%22date%22%2C%22po%22%3A0%2C%22ps%22%3A100%7D';
-            break;
-    }
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-        }
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            try {
-                var comments_root = JSON.parse(body);
-                var comments = [];
-                for(var i = 0 ; i < comments_root.length ; ++i) {
-                    clean_comment = comments_root[i].comment.replace(/(&nbsp;|<\/?[^>]+(>|$))/g, "");
-                    comments.push({nick:comments_root[i].member.nick, comment: clean_comment, regdate: comments_root[i].insertDate});
-                }
-                console.log(comments);
-                callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: comments});
-            }
-            catch(e) {
-                callback({});
-            }
-
-        });
-    }catch(e){
-        callback({});
-    }
-    */
     callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: ''});
 }

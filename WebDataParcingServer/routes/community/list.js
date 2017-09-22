@@ -6,6 +6,7 @@ var clien = require('./clien');
 var fomos = require('./fomos');
 var humor = require('./humor');
 var instiz = require('./instiz');
+var bestiz = require('./bestiz');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -63,7 +64,18 @@ var community_list = {
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: false,
-    }
+    },
+    bestiz_gcjd:
+    {
+        name: '베스티즈 게천잡담',
+        url: 'http://bestjd.cafe24.com/zboard/zboard.php?id=bestgj&select_arrange=headnum&desc=asc&category=&sn=off&ss=on&sc=off&keyword=&sn1=&divpage=8&page=',
+        obj: bestiz,
+        parcer: bestiz.free,
+        app_parcer: bestiz.app_page,
+        user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+        isAppView: true,
+        isEUCKR: true,
+    },
 };
 
 var listQuery = '';
@@ -94,4 +106,8 @@ exports.getParameterByName = function(name, url) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+exports.makeAppViewURL = function(key, no) {
+    return SERVER_ROOT + '/community/app/'+ key + '/' + no;
 }

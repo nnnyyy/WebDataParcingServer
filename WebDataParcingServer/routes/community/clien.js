@@ -19,7 +19,8 @@ exports.free = function($, key, info, callback) {
         if(info.isAppView) {
             a = url.split('?')[0];
             b = a.split('/');
-            url = list.server_root + '/community/app/'+ key + '/' + b[b.length-1];
+            //url = list.server_root + '/community/app/'+ key + '/' + b[b.length-1];
+            url = list.makeAppViewURL(key, b[b.length-1]);
         }
         name = $(this).find('.list-author').text().trim();
         regdate = $(this).find('.timestamp').text().trim();
