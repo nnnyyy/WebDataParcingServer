@@ -16,16 +16,18 @@ exports.free = function($, key, info, callback) {
     var regdate = '';
     var viewcnt = '0';
     var comment = '0';
-    $('.list_body_href').each(function() {
-        title = $(this).find('.link_hover').text();
-        name = $(this).find('.hu_nick_txt').text();
-        //regdate = $(this).find('.extra').text();
-        comment = $(this).find('.comment_num').text().replace('답글', '').trim();
-        url = PREFIX_LINK + $(this).attr('href');
-        if(info.isAppView) {
-            no = list.getParameterByName('number', url);
-            url = list.server_root + '/community/app/'+ key + '/' + no;
-        }
+    $('#mainboard tr').each(function() {
+        if($(this).find('#topboard').length != 0) return;
+        if($(this).find('#subject').length == 0) return;
+        title = $(this).find('#subject').text().trim();
+        name = $(this).find('.minitext2').text().trim();
+        comment = $(this).find('.cmt').text().trim();
+        $(this).find('.listno').each(function(i) {
+            switch(i) {
+                case 1: regdate = $(this).text(); break;
+                case 2: viewcnt = $(this).text(); break;
+            }
+        })
         row = {title: title, link: url, username: name, regdate: regdate, viewcnt: viewcnt, commentcnt: comment, linkencoding:urlencode(url)};
         data.push(row);
     })
@@ -73,7 +75,7 @@ exports.app_page = function(key, idx, callback) {
 }
 
 exports.getRealPage = function(page) {
-    return page - 1;
+    return page;
 }
 
 exports.nextPage = function(page) {
