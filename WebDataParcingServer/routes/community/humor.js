@@ -89,6 +89,10 @@ function parsingContent($,key,idx,callback) {
     var title = $('.read_subject h2').text().trim();
     var nickname = $('#content_info .hu_nick_txt').text().trim();
     var viewcnt = '';
+    $('.wrap_body img').each(function() {
+        $(this).attr('style','');
+        $(this).attr('width','');
+    })
     var article = $('.wrap_body').html();
     var comments = [];
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim();

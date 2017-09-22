@@ -11,3 +11,8 @@ img {
 a {
   color: #00B7FF;
 }
+
+#content {
+  width: 100%;
+  height: auto;
+}
