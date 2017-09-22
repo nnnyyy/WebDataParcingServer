@@ -4,8 +4,7 @@
 var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
-var Iconv = require('iconv').Iconv;
-var iconv = new Iconv('euc-kr', 'utf-8//translit//ignore');
+var iconv  = require('iconv-lite');
 var router = express.Router();
 module.exports = router;
 
@@ -44,7 +43,8 @@ router.get('/:key/:page', function(req, res, next) {
         request( reqOptions, function(err, res_inner, body) {
             var data;
             if(list[key].isEUCKR){
-                data = iconv.convert(body).toString();
+                var strContents = new Buffer(body);
+                data = iconv.decode(strContents, "EUC-KR").toString();
             }
             else {
                 data = body.toString();

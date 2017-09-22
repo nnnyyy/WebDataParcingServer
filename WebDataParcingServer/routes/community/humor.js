@@ -5,8 +5,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var urlencode = require('urlencode');
 var list = require('./list');
-var Iconv = require('iconv').Iconv;
-var iconv = new Iconv('euc-kr', 'utf-8//translit//ignore');
+var iconv  = require('iconv-lite');
 var PREFIX_LINK = 'http://m.humoruniv.com/board/';
 
 exports.free = function($, key, info, callback) {
@@ -56,7 +55,8 @@ exports.app_page = function(key, idx, callback) {
 
     try {
         request( reqOptions, function(err, res_inner, body) {
-            var data = iconv.convert(body).toString();
+            var strContents = new Buffer(body);
+            var data = iconv.decode(strContents, "EUC-KR").toString();
             var $ = cheerio.load(data);
             try {
                 parsingContent($, key, idx, function(ret) {
