@@ -4,6 +4,7 @@
 var app = require('../../app');
 var clien = require('./clien');
 var fomos = require('./fomos');
+var humor = require('./humor');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -25,7 +26,9 @@ var community_list = {
         obj: clien,
         parcer: clien.free,
         app_parcer: clien.app_page,
+        user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
+        isEUCKR: false,
     },
     fomos_free:
     {
@@ -34,7 +37,20 @@ var community_list = {
         obj: fomos,
         parcer: fomos.free,
         app_parcer: fomos.app_page,
+        user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
+        isEUCKR: false,
+    },
+    humor_pop:
+    {
+        name: '웃대 웃긴자료',
+        url: 'http://m.humoruniv.com/board/list.html?table=pds&pg=',
+        obj: humor,
+        parcer: humor.free,
+        app_parcer: humor.app_page,
+        user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+        isAppView: true,
+        isEUCKR: true,
     }
 };
 

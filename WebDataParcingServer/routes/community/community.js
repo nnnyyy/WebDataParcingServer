@@ -4,6 +4,8 @@
 var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
+var Iconv = require('iconv').Iconv;
+var iconv = new Iconv('euc-kr', 'utf-8//translit//ignore');
 var router = express.Router();
 module.exports = router;
 
@@ -26,17 +28,28 @@ router.get('/:key/:page', function(req, res, next) {
 
     var url_final = list[key].url + list[key].obj.getRealPage(page);
 
+    console.log(url_final);
     //  ����Ʈ ������
     var reqOptions = {
         url: url_final,
         method: 'GET',
         headers: {
-        }
+            "User-Agent": list[key].user_agent
+        },
+        timeout:5000,
+        encoding: null,
     }
 
     try {
         request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
+            var data;
+            if(list[key].isEUCKR){
+                data = iconv.convert(body).toString();
+            }
+            else {
+                data = body.toString();
+            }
+            var $ = cheerio.load(data);
             try {
                 list[key].parcer($, key, list[key], function(ret){
                     ret.next_page = list[key].obj.nextPage(page);
