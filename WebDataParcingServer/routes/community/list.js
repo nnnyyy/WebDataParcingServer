@@ -7,6 +7,7 @@ var fomos = require('./fomos');
 var humor = require('./humor');
 var instiz = require('./instiz');
 var bestiz = require('./bestiz');
+var mlb = require('./mlbpark');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -75,6 +76,17 @@ var community_list = {
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: true,
+    },
+    mlb_bp:
+    {
+        name: 'MLB파크 불펜',
+        url: 'http://mlbpark.donga.com/mp/b.php?m=list&b=bullpen&query=&select=&user=&p=',
+        obj: mlb,
+        parcer: mlb.free,
+        app_parcer: mlb.app_page,
+        user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
+        isAppView: true,
+        isEUCKR: false,
     },
 };
 
