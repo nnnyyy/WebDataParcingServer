@@ -100,6 +100,17 @@ var community_list = {
         isAppView: true,
         isEUCKR: false,
     },
+    todayhumor_best:
+    {
+        name: '오유 베스트',
+        url: 'http://m.todayhumor.co.kr/list.php?table=humorbest&page=',
+        obj: todayhumor,
+        parcer: todayhumor.free,
+        app_parcer: todayhumor.app_page,
+        user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
+        isAppView: true,
+        isEUCKR: false,
+    },
 };
 
 var listQuery = '';

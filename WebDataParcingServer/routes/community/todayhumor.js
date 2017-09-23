@@ -44,6 +44,9 @@ exports.app_page = function(key, idx, callback) {
         case 'todayhumor_bob':
             url_final = 'http://m.todayhumor.co.kr/view.php?table=bestofbest&no=' + idx;
             break;
+        case 'todayhumor_best':
+            url_final = 'http://m.todayhumor.co.kr/view.php?table=humorbest&no=' + idx;
+            break;
     }
 
     console.log(url_final);
@@ -93,8 +96,11 @@ function parsingContent($,key,idx,callback) {
     nickname = $('.view_writer_span').text().trim();
     viewcnt = $('.view_viewCount').text().replace('회','').trim();
     $('.viewContent a').text('');
+    $('.viewContent div').attr('style','');
     article = $('.viewContent').html();
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim()
+
+    console.log('what?');
 
     len = $('script').get().length;
     scriptdata = $('script').get()[len-1].children[0].data;
@@ -107,6 +113,9 @@ function parsingContent($,key,idx,callback) {
     var url_final = ''
     switch(key) {
         case 'todayhumor_bob':
+            url_final = 'http://m.todayhumor.co.kr/ajax_memo_list.php?parent_table='+ findTable +'&parent_id='+ findParentId +'&last_memo_no=0&is_mobile=Y'
+            break;
+        case 'todayhumor_best':
             url_final = 'http://m.todayhumor.co.kr/ajax_memo_list.php?parent_table='+ findTable +'&parent_id='+ findParentId +'&last_memo_no=0&is_mobile=Y'
             break;
     }

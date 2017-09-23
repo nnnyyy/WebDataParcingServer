@@ -8,6 +8,11 @@ img {
   height: auto;
 }
 
+iframe {
+  width: 80%;
+  height: auto;
+}
+
 a {
   color: #00B7FF;
 }
