@@ -30,8 +30,6 @@ exports.free = function($, key, info, callback) {
         name = $(this).find('.info .nick').text().trim();
         regdate = $(this).find('.info .date').text().trim();
 
-        console.log({title:title, link:url, username:name, regdate:regdate, viewcnt:viewcnt, commentcnt:comment, linkencoding:urlencode(url)});
-
         data.push({title:title, link:url, username:name, regdate:regdate, viewcnt:viewcnt, commentcnt:comment, linkencoding:urlencode(url)});
     })
 

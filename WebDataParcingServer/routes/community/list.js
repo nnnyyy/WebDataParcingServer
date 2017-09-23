@@ -8,6 +8,7 @@ var humor = require('./humor');
 var instiz = require('./instiz');
 var bestiz = require('./bestiz');
 var mlb = require('./mlbpark');
+var todayhumor = require('./todayhumor');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -88,6 +89,17 @@ var community_list = {
         isAppView: true,
         isEUCKR: false,
     },
+    todayhumor_bob:
+    {
+        name: '오유 베오베',
+        url: 'http://m.todayhumor.co.kr/list.php?table=bestofbest&page=',
+        obj: todayhumor,
+        parcer: todayhumor.free,
+        app_parcer: todayhumor.app_page,
+        user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
+        isAppView: true,
+        isEUCKR: false,
+    },
 };
 
 var listQuery = '';
@@ -122,4 +134,10 @@ exports.getParameterByName = function(name, url) {
 
 exports.makeAppViewURL = function(key, no) {
     return SERVER_ROOT + '/community/app/'+ key + '/' + no;
+}
+
+exports.findTextAndReturnRemainder = function(target, variable){
+    var chopFront = target.substring(target.search(variable)+variable.length,target.length);
+    var result = chopFront.substring(0,chopFront.search(";"));
+    return result;
 }
