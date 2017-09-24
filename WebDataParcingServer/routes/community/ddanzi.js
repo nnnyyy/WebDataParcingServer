@@ -72,13 +72,35 @@ exports.parsingContent = function($,key,idx,callback) {
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim();
 
     // comment
-    $('#cmt_list li').each(function() {
-        console.log('!!');
-        comm = $(this).find('div').eq(0).text().trim();
-        commname = $(this).find('.auth em').text().trim();
-        date = $(this).find('.auth .time').text().trim();
-        comments.push({nick:commname, comment: comm, regdate: date});
-    })
+    var reqOptions = {
+        url: 'http://www.ddanzi.com/index.php',
+        method: 'POST',
+        headers: {
+            "User-Agent": list.getList()[key].user_agent,
+        },
+        form: {
+            document_srl: idx,
+            mid: 'free',
+            module: 'board',
+            act: 'getBoardCommentPage'
+        },
+    }
 
-    callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: comments});
+    try {
+        request( reqOptions, function(err, res_inner, body) {
+            console.log('comments');
+            console.log(body);
+            try {
+                callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: comments});
+            }
+            catch(e) {
+                callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: []});
+            }
+
+        });
+    }catch(e){
+        callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: []});
+    }
+
+    //callback({title:title, nickname: nickname, vcnt: viewcnt, article: article, comments: comments});
 }
