@@ -8,6 +8,23 @@ var list = require('./list');
 var iconv  = require('iconv-lite');
 var PREFIX_LINK = 'http://bestjd.cafe24.com/zboard/';
 
+exports.getRealPage = function(page) {
+    return page;
+}
+
+exports.nextPage = function(page) {
+    return parseInt(page) + 1;
+}
+
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'bestiz_gcjd':
+            return 'http://bestjd.cafe24.com/zboard/view.php?id=bestgj&page=1&sn1=&divpage=8&sn=off&ss=on&sc=off&select_arrange=headnum&desc=asc&no=' + idx;
+    }
+
+    return '';
+}
+
 exports.free = function($, key, info, callback) {
     data = [];
     var title = '';
@@ -37,55 +54,7 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'bestiz_gcjd':
-            url_final = 'http://bestjd.cafe24.com/zboard/view.php?id=bestgj&page=1&sn1=&divpage=8&sn=off&ss=on&sc=off&select_arrange=headnum&desc=asc&no=' + idx;
-            break;
-    }
-
-    console.log(url_final);
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-        },
-        encoding:null,
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var strContents = new Buffer(body);
-            data = iconv.decode(strContents, "EUC-KR").toString();
-            var $ = cheerio.load(data);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
-exports.getRealPage = function(page) {
-    return page;
-}
-
-exports.nextPage = function(page) {
-    return parseInt(page) + 1;
-}
-
-function parsingContent($,key,idx,callback) {
+exports.parsingContent = function($,key,idx,callback) {
     var title = '';
     var nickname = '';
     var viewcnt = '';

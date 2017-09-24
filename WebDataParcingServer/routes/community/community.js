@@ -19,40 +19,37 @@ router.get('/:key/:page', function(req, res, next) {
     key = req.params.key;
     page = req.params.page;
 
-    list = commlist.getList();
-    if( !list[key] ) {
-        res.send('error');
-        return;
-    }
-
-    var url_final = list[key].url + list[key].obj.getRealPage(page);
+    var listItem = commlist.getList()[key];
+    var itemObject = listItem.obj;
+    var url_final = listItem.url + itemObject.getRealPage(page);
 
     console.log(url_final);
-    //  ����Ʈ ������
+
     var reqOptions = {
         url: url_final,
         method: 'GET',
         headers: {
-            "User-Agent": list[key].user_agent
+            "User-Agent": listItem.user_agent
         },
         timeout:5000,
-        encoding: null,
+    }
+
+    if(listItem.isEUCKR) {
+        reqOptions.encoding = null;
     }
 
     try {
         request( reqOptions, function(err, res_inner, body) {
-            var data;
-            if(list[key].isEUCKR){
+            var data = body;
+            if(listItem.isEUCKR){
                 var strContents = new Buffer(body);
                 data = iconv.decode(strContents, "EUC-KR").toString();
             }
-            else {
-                data = body.toString();
-            }
+
             var $ = cheerio.load(data);
             try {
-                list[key].parcer($, key, list[key], function(ret){
-                    ret.next_page = list[key].obj.nextPage(page);
+                listItem.parcer($, key, listItem, function(ret){
+                    ret.next_page = itemObject.nextPage(page);
                     res.send(ret);
                 });
             }
@@ -67,10 +64,69 @@ router.get('/:key/:page', function(req, res, next) {
 })
 
 router.get('/app/:key/:idx', function(req, res, next) {
-    list = commlist.getList();
     key = req.params.key;
     idx = req.params.idx;
-    list[key].app_parcer(key, idx, function(ret) {
+    appPage(key, idx, function(ret) {
+        if(ret.ret != 0) {
+            res.send('Error');
+            return;
+        }
+
         res.render('appview', ret);
     })
 })
+
+
+function appPage(key, idx, callback) {
+    var listItem = commlist.getList()[key];
+    var itemObject = listItem.obj;
+    var url_final = itemObject.getPageURL(key, idx);
+
+    var reqOptions = {
+        url: url_final,
+        method: 'GET',
+        headers: {
+            "User-Agent": listItem.user_agent,
+        },
+        timeout:3500,
+    }
+
+    if(listItem.isEUCKR) {
+        reqOptions.encoding = null;
+    }
+    if(listItem.setCookie) {
+        reqOptions.headers['Set-Cookie'] = listItem.setCookie;
+    }
+
+    try {
+        request( reqOptions, function(err, res_inner, body) {
+            if(err) {
+                callback({ret:-1})
+                return;
+            }
+            var data = body;
+            try {
+                if(listItem.isEUCKR) {
+                    var strContents = new Buffer(body);
+                    data = iconv.decode(strContents, "EUC-KR").toString();
+                }
+            }catch(e) {
+                callback({ret:-1})
+                return;
+            }
+
+            var $ = cheerio.load(data);
+            try {
+                itemObject.parsingContent($, key, idx, function(ret) {
+                    callback({ret:0, data: ret});
+                });
+            }
+            catch(e) {
+                callback({ret:-1})
+            }
+
+        });
+    }catch(e){
+        callback({ret:-1})
+    }
+}

@@ -5,7 +5,6 @@ var request = require('request');
 var cheerio = require('cheerio');
 var urlencode = require('urlencode');
 var list = require('./list');
-var iconv  = require('iconv-lite');
 var PREFIX_LINK = 'http://m.todayhumor.co.kr/';
 
 exports.free = function($, key, info, callback) {
@@ -37,46 +36,6 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'todayhumor_bob':
-            url_final = 'http://m.todayhumor.co.kr/view.php?table=bestofbest&no=' + idx;
-            break;
-        case 'todayhumor_best':
-            url_final = 'http://m.todayhumor.co.kr/view.php?table=humorbest&no=' + idx;
-            break;
-    }
-
-    console.log(url_final);
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-            "User-Agent": "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
-        },
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
 exports.getRealPage = function(page) {
     return page;
 }
@@ -85,7 +44,18 @@ exports.nextPage = function(page) {
     return parseInt(page) + 1;
 }
 
-function parsingContent($,key,idx,callback) {
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'todayhumor_bob':
+            return 'http://m.todayhumor.co.kr/view.php?table=bestofbest&no=' + idx;
+        case 'todayhumor_best':
+            return 'http://m.todayhumor.co.kr/view.php?table=humorbest&no=' + idx;
+    }
+
+    return '';
+}
+
+exports.parsingContent = function($,key,idx,callback) {
     var title = '';
     var nickname = '';
     var viewcnt = '';
@@ -97,6 +67,8 @@ function parsingContent($,key,idx,callback) {
     viewcnt = $('.view_viewCount').text().replace('회','').trim();
     $('.viewContent a').text('');
     $('.viewContent div').attr('style','');
+    $('.viewContent img').attr('onclick','');
+    $('.viewContent img').attr('onload','');
     article = $('.viewContent').html();
     article = article.replace(/(\r\n|\n|\r)/gm,"").trim()
 

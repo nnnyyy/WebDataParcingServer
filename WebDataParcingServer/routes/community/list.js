@@ -9,6 +9,8 @@ var instiz = require('./instiz');
 var bestiz = require('./bestiz');
 var mlb = require('./mlbpark');
 var todayhumor = require('./todayhumor');
+var rgr = require('./rgr');
+var ddanzi = require('./ddanzi');
 
 var SERVER_ROOT = 'http://4seasonpension.com:7888';
 exports.server_root = SERVER_ROOT;
@@ -20,7 +22,6 @@ var community_list = {
         url: 'http://m.clien.net/service/board/park?&od=T31&po=',
         obj: clien,
         parcer: clien.free,
-        app_parcer: clien.app_page,
         isAppView: true,
     },
     clien_android:
@@ -29,7 +30,6 @@ var community_list = {
         url: 'https://www.clien.net/service/board/cm_andro?&od=T31&po=',
         obj: clien,
         parcer: clien.free,
-        app_parcer: clien.app_page,
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: false,
@@ -40,7 +40,6 @@ var community_list = {
         url: 'http://m.fomos.kr/talk/article_list?bbs_id=11&page=',
         obj: fomos,
         parcer: fomos.free,
-        app_parcer: fomos.app_page,
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: false,
@@ -51,7 +50,6 @@ var community_list = {
         url: 'http://m.humoruniv.com/board/list.html?table=pds&pg=',
         obj: humor,
         parcer: humor.free,
-        app_parcer: humor.app_page,
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: true,
@@ -62,7 +60,6 @@ var community_list = {
         url: 'http://www.instiz.net/bbs/list.php?id=free&category=1&page=',
         obj: instiz,
         parcer: instiz.free,
-        app_parcer: instiz.app_page,
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: false,
@@ -73,7 +70,6 @@ var community_list = {
         url: 'http://bestjd.cafe24.com/zboard/zboard.php?id=bestgj&select_arrange=headnum&desc=asc&category=&sn=off&ss=on&sc=off&keyword=&sn1=&divpage=8&page=',
         obj: bestiz,
         parcer: bestiz.free,
-        app_parcer: bestiz.app_page,
         user_agent: "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
         isAppView: true,
         isEUCKR: true,
@@ -84,7 +80,6 @@ var community_list = {
         url: 'http://mlbpark.donga.com/mp/b.php?m=list&b=bullpen&query=&select=&user=&p=',
         obj: mlb,
         parcer: mlb.free,
-        app_parcer: mlb.app_page,
         user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
         isAppView: true,
         isEUCKR: false,
@@ -95,7 +90,6 @@ var community_list = {
         url: 'http://m.todayhumor.co.kr/list.php?table=bestofbest&page=',
         obj: todayhumor,
         parcer: todayhumor.free,
-        app_parcer: todayhumor.app_page,
         user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
         isAppView: true,
         isEUCKR: false,
@@ -106,8 +100,37 @@ var community_list = {
         url: 'http://m.todayhumor.co.kr/list.php?table=humorbest&page=',
         obj: todayhumor,
         parcer: todayhumor.free,
-        app_parcer: todayhumor.app_page,
         user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
+        isAppView: true,
+        isEUCKR: false,
+    },
+    rgr_pop:
+    {
+        name: '알지롱 호기심해결',
+        url: 'http://te31.com/rgr/zboard.php?id=rgrong&select_arrange=headnum&desc=asc&category=&sn=on&ss=on&sc=on&keyword=&sn1=&divpage=506&myreply=&page=',
+        obj: rgr,
+        parcer: rgr.free,
+        user_agent: "Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36",
+        isAppView: true,
+        isEUCKR: true,
+    },
+    rgr_rare:
+    {
+        name: '알지롱 레어.유머',
+        url: 'http://te31.com/rgr/zboard.php?id=rare2014&select_arrange=headnum&desc=asc&category=&sn=on&ss=on&sc=on&keyword=&sn1=&divpage=9&myreply=&page=',
+        obj: rgr,
+        parcer: rgr.free,
+        user_agent: '',
+        isAppView: true,
+        isEUCKR: true,
+    },
+    ddanzi_free:
+    {
+        name: '딴지 자유게시판',
+        url: 'http://www.ddanzi.com/index.php?mid=free&page=',
+        obj: ddanzi,
+        parcer: ddanzi.free,
+        user_agent: 'Mozilla/5.0 (Linux; Android 4.4.2; Nexus 4 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36',
         isAppView: true,
         isEUCKR: false,
     },

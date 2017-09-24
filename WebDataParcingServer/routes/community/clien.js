@@ -33,43 +33,6 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'clien_free':
-            url_final = 'https://m.clien.net/service/board/park/'+ idx +'?po=0&od=T33&sk=&sv=&category=&groupCd=board_all&articlePeriod=default';
-            break;
-        case 'clien_android':
-            url_final = 'https://www.clien.net/service/board/cm_andro/'+ idx +'?po=0&od=T31&sk=&sv=&category=&groupCd=&articlePeriod=default'
-            break;
-    }
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-        }
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
 exports.getRealPage = function(page) {
     return page - 1;
 }
@@ -78,7 +41,19 @@ exports.nextPage = function(page) {
     return parseInt(page) + 1;
 }
 
-function parsingContent($,key,idx,callback) {
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'clien_free':
+            return 'https://m.clien.net/service/board/park/'+ idx +'?po=0&od=T33&sk=&sv=&category=&groupCd=board_all&articlePeriod=default';
+
+        case 'clien_android':
+            return 'https://www.clien.net/service/board/cm_andro/'+ idx +'?po=0&od=T31&sk=&sv=&category=&groupCd=&articlePeriod=default';
+    }
+
+    return '';
+}
+
+exports.parsingContent = function($,key,idx,callback) {
     title = $('.title-subject div.break').text().trim();
     nickname = $('button.nick').text().trim();
     viewcnt = $('span.view-count storng').text().trim();

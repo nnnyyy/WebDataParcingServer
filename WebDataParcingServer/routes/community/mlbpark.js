@@ -36,43 +36,6 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'mlb_bp':
-            url_final = 'http://mlbpark.donga.com/mp/b.php?p=1&b=bullpen&id='+ idx +'&select=&query=&user=&site=donga.com&reply=&source=';
-            break;
-    }
-
-    console.log(url_final);
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-        },
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
 exports.getRealPage = function(page) {
     return page;
 }
@@ -81,7 +44,16 @@ exports.nextPage = function(page) {
     return parseInt(page) + 30;
 }
 
-function parsingContent($,key,idx,callback) {
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'mlb_bp':
+            return 'http://mlbpark.donga.com/mp/b.php?p=1&b=bullpen&id='+ idx +'&select=&query=&user=&site=donga.com&reply=&source=';
+    }
+
+    return '';
+}
+
+exports.parsingContent = function($,key,idx,callback) {
     var title = '';
     var nickname = '';
     var viewcnt = '';

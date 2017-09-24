@@ -36,40 +36,6 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'fomos_free':
-            url_final = 'http://m.fomos.kr/talk/article_view?bbs_id=11&lurl=%2Ftalk%2Farticle_list%3Fbbs_id%3D11%26page%3D1&indexno=' + idx;
-            break;
-    }
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-        }
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
 exports.getRealPage = function(page) {
     return page;
 }
@@ -78,7 +44,16 @@ exports.nextPage = function(page) {
     return parseInt(page) + 1;
 }
 
-function parsingContent($,key,idx,callback) {
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'fomos_free':
+            return 'http://m.fomos.kr/talk/article_view?bbs_id=11&lurl=%2Ftalk%2Farticle_list%3Fbbs_id%3D11%26page%3D1&indexno=' + idx;
+    }
+
+    return '';
+}
+
+exports.parsingContent = function($,key,idx,callback) {
     var title = $('.board_area .tit').text().trim();
     var nickname = $('#contents .author').text().trim();
     $('.news_image img').each(function() {

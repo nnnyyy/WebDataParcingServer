@@ -36,44 +36,6 @@ exports.free = function($, key, info, callback) {
     callback({ret:0, list:data});
 }
 
-//  �� �������� �Ľ�
-exports.app_page = function(key, idx, callback) {
-    var url_final = '';
-    switch(key) {
-        case 'instiz_free':
-            url_final = 'http://www.instiz.net/free?no='+ idx + '&page=1&category=1';
-            break;
-    }
-
-    console.log(url_final);
-
-    var reqOptions = {
-        url: url_final,
-        method: 'GET',
-        headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-        },
-        encoding:null,
-    }
-
-    try {
-        request( reqOptions, function(err, res_inner, body) {
-            var $ = cheerio.load(body);
-            try {
-                parsingContent($, key, idx, function(ret) {
-                    callback({ret:0, data: ret});
-                });
-            }
-            catch(e) {
-                callback({ret:-1})
-            }
-
-        });
-    }catch(e){
-        callback({ret:-1})
-    }
-}
-
 exports.getRealPage = function(page) {
     return page;
 }
@@ -82,7 +44,16 @@ exports.nextPage = function(page) {
     return parseInt(page) + 1;
 }
 
-function parsingContent($,key,idx,callback) {
+exports.getPageURL = function(key, idx) {
+    switch(key) {
+        case 'instiz_free':
+            return 'http://www.instiz.net/free?no='+ idx + '&page=1&category=1';
+    }
+
+    return '';
+}
+
+exports.parsingContent = function($,key,idx,callback) {
     var title = $('.tb_top #subject').text().trim();
     var nickname = '';
     var viewcnt = '';
