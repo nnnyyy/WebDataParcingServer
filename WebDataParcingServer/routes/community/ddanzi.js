@@ -65,7 +65,7 @@ exports.parsingContent = function($,key,idx,callback) {
 
     $('.hx h2 a').text('');
     title = $('.hx h2').text().replace('›','').trim();
-    nickname = $('.hx .ex a').text().trim();
+    nickname = $('.hx .ex a').eq(0).text().trim();
     $('.hx .ex a').text('');
     $('<br>').insertBefore('.bd .co img');
     article = $('.bd .co').html();
